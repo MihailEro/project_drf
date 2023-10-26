@@ -5,10 +5,13 @@ from course.serializers import CourseSerializer, CourseDetailSerializer
 
 from users.permissions import IsSuperuser, IsOwnerOrStaff
 
+from course.paginators import CoursePaginator
+
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseDetailSerializer
     queryset = Course.objects.all()
+    pagination_class = CoursePaginator
 
     def get_permissions(self):
         if self.action == 'create':

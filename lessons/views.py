@@ -4,6 +4,8 @@ from lessons.serializers import LessonSerializers, LessonListSerializer
 
 from users.permissions import IsOwnerOrStaff, IsSuperuser
 
+from lessons.paginators import LessonsPaginator
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializers
@@ -13,7 +15,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonListSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsOwnerOrStaff]
+    pagination_class = LessonsPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
