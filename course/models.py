@@ -26,6 +26,7 @@ class Course(models.Model):
 class Subscribe(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='студент')
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.course}:{self.user}'

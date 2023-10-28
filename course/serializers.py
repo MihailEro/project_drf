@@ -1,26 +1,38 @@
 from rest_framework import serializers
 
-from course.models import Course
+from course.models import Course, Subscribe
 
-from rest_framework.fields import SerializerMethodField
-from lessons.models import Lesson
 from lessons.serializers import LessonSerializers
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    lessons_count = serializers.SerializerMethodField(read_only=True)
+    lessons = LessonSerializers(many=True, read_only=True)
+    subscribe = serializers.SerializerMethodField(read_only=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = kwargs.get('context').get('request')
+
+    @staticmethod
+    def get_lesson_count(instance):
+        return instance.lessons.count()
+
+    def get_is_subscribe(self, instance):
+        subs = Subscribe.objects.filter(user=self.request.user, course=instance).first()
+
+        if subs and subs.is_active:
+            return True
+        else:
+            return False
+
     class Meta:
         model = Course
         fields = '__all__'
 
 
-class CourseDetailSerializer(serializers.ModelSerializer):
-    lessons_count = SerializerMethodField()
-    lessons = LessonSerializers(source='lesson_set', many=True)
-
-    def get_lesson_count(self, obj):
-        return Lesson.objects.filter(course=obj.pk).count()
-
+class SubscribeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Course
+        model = Subscribe
         fields = '__all__'
