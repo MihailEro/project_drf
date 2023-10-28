@@ -29,7 +29,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class SubscribeCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscribeSerializer
-    queryset = Subscribe.obljects.all()
+    queryset = Subscribe.objects.all()
     permission_classes = [AllowAny]
 
 

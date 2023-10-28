@@ -3,7 +3,7 @@ from lessons.models import Lesson
 from course.models import Course
 from rest_framework.relations import SlugRelatedField
 
-from validators import URLValidator
+from lessons.validators import URLValidator
 
 
 class LessonSerializers(serializers.ModelSerializer):
