@@ -1,4 +1,8 @@
 from django.db import models
+from course.models import Course
+
+from config import settings
+from users.models import User
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -12,6 +16,8 @@ class Lesson(models.Model):
     lesson_video_url = models.CharField(
         max_length=255, verbose_name="ссылка на видео", **NULLABLE
     )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс', **NULLABLE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='студент', **NULLABLE)
 
     def __str__(self):
         return f"{self.lesson_name} {self.lesson_description}"

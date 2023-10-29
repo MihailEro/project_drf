@@ -15,6 +15,10 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
+    def save(self, *args, **kwargs):
+        self.set_password(self.password)
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "пользователь"
         verbose_name_plural = "пользователи"
