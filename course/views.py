@@ -17,13 +17,13 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            self.permission_classes = [IsSuperuser]
+            self.permission_classes = [AllowAny]
         elif self.action == 'destroy':
-            self.permission_classes = [IsSuperuser]
+            self.permission_classes = [AllowAny]
         elif self.action == 'update':
-            self.permission_classes = [IsOwnerOrStaff]
+            self.permission_classes = [AllowAny]
         elif self.action == 'retrieve':
-            self.permission_classes = [IsOwnerOrStaff]
+            self.permission_classes = [AllowAny]
         return [permission() for permission in self.permission_classes]
 
 
@@ -31,6 +31,9 @@ class SubscribeCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscribeSerializer
     queryset = Subscribe.objects.all()
     permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        serializer.save(is_active=True)
 
 
 class SubscribeDestroyAPIView(generics.DestroyAPIView):

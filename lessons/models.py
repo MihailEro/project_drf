@@ -17,7 +17,7 @@ class Lesson(models.Model):
         max_length=255, verbose_name="ссылка на видео", **NULLABLE
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс', **NULLABLE)
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='студент', **NULLABLE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='студент', **NULLABLE)
 
     def __str__(self):
         return f"{self.lesson_name} {self.lesson_description}"
