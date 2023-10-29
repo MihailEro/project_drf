@@ -17,13 +17,13 @@ class SubscribeTestCase(APITestCase):
         Course.objects.create(course_name='test', course_description='test')
 
     def test_create_subscribe(self):
-        """"""
+        """Тестирование создания подписки"""
         url = reverse("course:create-subscribe")
         response = self.client.post(url, data=self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_delete_subscribe(self):
-        """"""
+        """Тестирование удаления подписки"""
         user = User.objects.get()
         course = Course.objects.get()
 
