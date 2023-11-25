@@ -3,6 +3,8 @@ from rest_framework import serializers
 from course.models import Course, Subscribe
 
 from lessons.serializers import LessonSerializers
+from payments.models import Payment
+from payments.services import create_payment_intent, retrieve_payment_intent
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -36,3 +38,23 @@ class SubscribeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscribe
         fields = '__all__'
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = kwargs.get('context').get('request')
+
+    def gett_payment_stripe(self, instance):
+        if self.request.method == 'POST':
+            pay_id = create_payment_intent(instance.amount)
+            obj = Payment.objects.get(id=instance.id)
+            obj.pay_id = pay_id
+            obj.save()
+
+            return retrieve_payment_intent(pay_id)

@@ -17,6 +17,7 @@ class Payment(models.Model):
     pay_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок', **NULLABLE)
     pay_summ = models.IntegerField(verbose_name='сумма оплаты')
     pay_method = models.CharField(choices=METHOD_CHOICES, default=METHOD_CHOICES[1], verbose_name='способ оплаты')
+    pay_id = models.CharField(max_length=100, verbose_name='id', **NULLABLE)
 
     def __str__(self):
         return f'{self.pay_summ}'
